@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Trang Chủ - Khách - DNU Rideshare</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        body { background: linear-gradient(135deg, #e6f0fa, #d1e6f2); min-height: 100vh; margin: 0; font-family: 'Arial', sans-serif; padding-top: 80px; }
+        .nav-container { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: fixed; top: 0; width: 100%; z-index: 1000; }
+        .nav-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; height: 80px; padding: 0 20px; }
+        .nav-logo { font-size: 24px; font-weight: bold; color: #1e3a8a; }
+        .nav-links { display: flex; gap: 20px; align-items: center; }
+        .nav-links a { color: #2d3748; text-decoration: none; transition: color 0.3s; }
+        .nav-links a:hover { color: #1e3a8a; }
+        .logout-btn { background-color: #ef4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; transition: background-color 0.3s; }
+        .logout-btn:hover { background-color: #dc2626; }
+        .dashboard-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .dashboard-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .btn-primary { background-color: #3b82f6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; transition: background-color 0.3s; }
+        .btn-primary:hover { background-color: #2563eb; }
+        .promotion-card { position: relative; }
+        .promotion-card img { width: 100%; height: 100%; object-fit: cover; }
+        .promotion-card .bg-gradient-to-r { padding: 4px; }
+        .rounded-button { border-radius: 6px; }
+        .quick-access div { text-align: center; }
+        .confirm-dialog { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); z-index: 1000; text-align: center; }
+        .confirm-dialog p { margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <nav class="nav-container">
+        <div class="nav-content">
+            <div class="nav-logo">DNU Rideshare</div>
+            <div class="nav-links">
+                <a href="@Url.Action("CustomerDashboard", "Account")">Trang chủ</a>
+                <a href="@Url.Action("Trips", "Customer")">Chuyến đi</a>
+                <a href="@Url.Action("ManageTrips", "Customer")">Quản lý chuyến đi</a>
+                <a href="@Url.Action("AccountInfo", "Customer")">Thông tin tài khoản</a>
+            </div>
+            <button id="logoutBtn" class="logout-btn">Đăng xuất</button>
+        </div>
+    </nav>
+    <div class="dashboard-container">
+        <div class="dashboard-card">
+            <h2 class="text-2xl font-bold text-1e3a8a mb-4">Chào mừng, Khách hàng!</h2>
+            <p class="text-2d3748 mb-4">Khám phá các chuyến đi và đặt chỗ ngay hôm nay.</p>
+            <a href="@Url.Action("Trips", "Customer")" class="btn-primary">Xem chuyến đi</a>
+        </div>
+        <!-- Promotions Section -->
+        <div class="px-6 mb-6">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-lg font-semibold">Khuyến mãi</h2>
+                <button class="text-primary text-sm flex items-center gap-1 !rounded-button px-3 py-1.5 hover:bg-primary/5 whitespace-nowrap">
+                    <span>Xem tất cả</span>
+                    <i class="ri-arrow-right-s-line"></i>
+                </button>
+            </div>
+            <div class="overflow-x-auto pb-2 -mx-6 px-6">
+                <div class="flex gap-4 min-w-max">
+                    <div class="promotion-card w-64 h-32 rounded-xl overflow-hidden relative shadow-sm">
+                        <img src="https://readdy.ai/api/search-image?query=modern%2520promotional%2520banner%2520for%2520ride-sharing%2520app%2520with%2520vibrant%2520blue%2520gradient%2520background%252C%2520showing%2520discount%2520offer%252C%2520clean%2520design%252C%2520Vietnamese%2520text%2520saying%2520%2522Gi%E1%BA%A3m%252050%25%2520chuy%E1%BA%BFn%2520%C4%91%E1%BA%A7u%2520ti%C3%AAn%2522%2520%2850%25%2520off%2520first%2520ride%29%252C%2520professional%2520marketing%2520material&width=256&height=128&seq=6&orientation=landscape" class="w-full h-full object-cover" alt="Promotion" />
+                        <div class="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent p-4 flex flex-col justify-between">
+                            <div class="text-white font-bold text-lg">Giảm 50%</div>
+                            <div>
+                                <div class="text-white text-sm">Chuyến đầu tiên</div>
+                                <div class="bg-white text-primary text-xs font-semibold px-2 py-1 rounded-full mt-1 inline-block">NEWUSER</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="promotion-card w-64 h-32 rounded-xl overflow-hidden relative shadow-sm">
+                        <img src="https://readdy.ai/api/search-image?query=modern%2520promotional%2520banner%2520for%2520ride-sharing%2520app%2520with%2520vibrant%2520orange%2520gradient%2520background%252C%2520showing%2520weekend%2520special%2520offer%252C%2520clean%2520design%252C%2520Vietnamese%2520text%2520saying%2520%2522Gi%E1%BA%A3m%252030%25%2520cu%E1%BB%91i%2520tu%E1%BA%A7n%2522%2520%2830%25%2520off%2520weekend%2520rides%29%252C%2520professional%2520marketing%2520material&width=256&height=128&seq=7&orientation=landscape" class="w-full h-full object-cover" alt="Promotion" />
+                        <div class="absolute inset-0 bg-gradient-to-r from-orange-500/80 to-transparent p-4 flex flex-col justify-between">
+                            <div class="text-white font-bold text-lg">Giảm 30%</div>
+                            <div>
+                                <div class="text-white text-sm">Cuối tuần</div>
+                                <div class="bg-white text-orange-500 text-xs font-semibold px-2 py-1 rounded-full mt-1 inline-block">WEEKEND</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="promotion-card w-64 h-32 rounded-xl overflow-hidden relative shadow-sm">
+                        <img src="https://readdy.ai/api/search-image?query=modern%2520promotional%2520banner%2520for%2520ride-sharing%2520app%2520with%2520vibrant%2520green%2520gradient%2520background%252C%2520showing%2520eco-friendly%2520ride%2520offer%252C%2520clean%2520design%252C%2520Vietnamese%2520text%2520saying%2520%2522Gi%E1%BA%A3m%252020%25%2520chuy%E1%BA%BFn%2520xanh%2522%2520%2820%25%2520off%2520eco-friendly%2520rides%29%252C%2520professional%2520marketing%2520material&width=256&height=128&seq=8&orientation=landscape" class="w-full h-full object-cover" alt="Promotion" />
+                        <div class="absolute inset-0 bg-gradient-to-r from-green-500/80 to-transparent p-4 flex flex-col justify-between">
+                            <div class="text-white font-bold text-lg">Giảm 20%</div>
+                            <div>
+                                <div class="text-white text-sm">Chuyến xanh</div>
+                                <div class="bg-white text-green-500 text-xs font-semibold px-2 py-1 rounded-full mt-1 inline-block">ECORIDE</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Quick Access Section -->
+        <div class="px-6 mb-6">
+            <h2 class="text-lg font-semibold mb-3">Truy cập nhanh</h2>
+            <div class="grid grid-cols-4 gap-4">
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <i class="ri-history-line text-primary ri-lg"></i>
+                    </div>
+                    <span class="text-xs text-center">Lịch sử</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-14 h-14 rounded-xl bg-orange-100 flex items-center justify-center">
+                        <i class="ri-coupon-3-line text-orange-500 ri-lg"></i>
+                    </div>
+                    <span class="text-xs text-center">Khuyến mãi</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-14 h-14 rounded-xl bg-green-100 flex items-center justify-center">
+                        <i class="ri-wallet-3-line text-green-500 ri-lg"></i>
+                    </div>
+                    <span class="text-xs text-center">Ví</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-14 h-14 rounded-xl bg-purple-100 flex items-center justify-center">
+                        <i class="ri-customer-service-2-line text-purple-500 ri-lg"></i>
+                    </div>
+                    <span class="text-xs text-center">Hỗ trợ</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="confirmDialog" class="confirm-dialog">
+        <p>Bạn có muốn đăng xuất không?</p>
+        <button id="confirmYes" class="btn-primary">Có</button>
+        <button id="confirmNo" class="btn-secondary">Không</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            document.getElementById('confirmDialog').style.display = 'block';
+        });
+
+        document.getElementById('confirmYes').addEventListener('click', function() {
+            // Logic đăng xuất (ví dụ: xóa session)
+            window.location.href = '@Url.Action("Logout", "Account")';
+            document.getElementById('confirmDialog').style.display = 'none';
+        });
+
+        document.getElementById('confirmNo').addEventListener('click', function() {
+            document.getElementById('confirmDialog').style.display = 'none';
+        });
+    </script>
+</body>
+</html>

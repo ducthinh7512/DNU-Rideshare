@@ -1,0 +1,366 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Trang Quản trị Hệ thống</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" rel="stylesheet">
+    <style>
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .chart-container {
+            height: 300px;
+        }
+        .user-list, .location-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .logo {
+            height: 40px;
+            width: auto;
+        }
+        .logout-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+<nav class="bg-white shadow">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex h-16 justify-between items-center">
+            <div class="nav-logo">DNU Rideshare</div>
+            <div class="flex items-center">
+                <button class="relative rounded-full bg-white p-2 text-gray-500 hover:text-gray-700">
+                    <i class="ri-notification-3-line text-xl"></i>
+                    <span class="absolute top-0 right-0 h-4 w-4 rounded-full bg-red-500 text-xs text-white flex items-center justify-center">5</span>
+                </button>
+                <div class="ml-4 flex items-center">
+                    <div class="relative">
+                        <button type="button" class="flex items-center gap-x-2 text-sm">
+                            <img class="h-8 w-8 rounded-full bg-gray-50" src="data:image/jpeg;base64,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" alt="">
+                            <span class="hidden lg:flex lg:items-center">
+                                    <span class="ml-4 text-sm font-medium text-gray-700">Quản trị viên</span>
+                                    <i class="ri-arrow-down-s-line ml-2 text-gray-400"></i>
+                                </span>
+                        </button>
+                    </div>
+                    <a href="@Url.Action("Login", "Account")" class="logout-btn ml-4">Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<main>
+    <div class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-4">
+            <div class="bg-white overflow-hidden rounded-lg shadow">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="w-14 h-14 flex items-center justify-center rounded-full bg-blue-50">
+                                <i class="ri-user-line text-2xl text-blue-600"></i>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Tổng người dùng</dt>
+                                <dd class="flex items-baseline">
+                                    <div class="text-2xl font-semibold text-gray-900">2,457</div>
+                                    <div class="ml-2 flex items-baseline text-sm font-semibold text-green-600">
+                                        <i class="ri-arrow-up-s-fill"></i>
+                                        <span class="sr-only">Tăng</span>12%
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white overflow-hidden rounded-lg shadow">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="w-14 h-14 flex items-center justify-center rounded-full bg-green-50">
+                                <i class="ri-route-line text-2xl text-green-600"></i>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Chuyến đi hoàn thành</dt>
+                                <dd class="flex items-baseline">
+                                    <div class="text-2xl font-semibold text-gray-900">1,839</div>
+                                    <div class="ml-2 flex items-baseline text-sm font-semibold text-green-600">
+                                        <i class="ri-arrow-up-s-fill"></i>
+                                        <span class="sr-only">Tăng</span>8.5%
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white overflow-hidden rounded-lg shadow">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="w-14 h-14 flex items-center justify-center rounded-full bg-yellow-50">
+                                <i class="ri-error-warning-line text-2xl text-yellow-600"></i>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Khiếu nại đang xử lý</dt>
+                                <dd class="flex items-baseline">
+                                    <div class="text-2xl font-semibold text-gray-900">13</div>
+                                    <div class="ml-2 flex items-baseline text-sm font-semibold text-red-600">
+                                        <i class="ri-arrow-up-s-fill"></i>
+                                        <span class="sr-only">Tăng</span>2
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white overflow-hidden rounded-lg shadow">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="w-14 h-14 flex items-center justify-center rounded-full bg-purple-50">
+                                <i class="ri-map-pin-line text-2xl text-purple-600"></i>
+                            </div>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Địa điểm phổ biến</dt>
+                                <dd class="flex items-baseline">
+                                    <div class="text-2xl font-semibold text-gray-900">24</div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-6">
+                    <h3 class="text-lg font-medium text-gray-900">Thống kê chuyến đi</h3>
+                    <div class="chart-container">
+                        <canvas id="tripChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-medium text-gray-900">Khiếu nại gần đây</h3>
+                        <a href="#" class="text-sm font-medium text-primary hover:text-primary/80">Xem tất cả</a>
+                    </div>
+                    <div class="mt-4 space-y-4">
+                        <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
+                            <div class="w-12 h-12 rounded-full bg-gray-200 overflow-hidden flex-shrink-0">
+                                <img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20young%20Vietnamese%20woman%20with%20medium%20length%20black%20hair%2C%20simple%20background%2C%20high%20quality%20portrait&width=100&height=100&seq=user345&orientation=squarish" alt="Avatar" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900">Nguyễn Thị Mai Anh</p>
+                                <p class="text-sm text-gray-500">Tài xế không đúng giờ và thái độ không tốt</p>
+                                <div class="mt-1 flex items-center gap-2">
+                                    <span class="inline-flex items-center rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800">Đang xử lý</span>
+                                    <span class="text-xs text-gray-500">2 giờ trước</span>
+                                </div>
+                            </div>
+                            <button class="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 hover:text-gray-500">
+                                <i class="ri-more-2-fill"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
+                            <div class="w-12 h-12 rounded-full bg-gray-200 overflow-hidden flex-shrink-0">
+                                <img src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20young%20Vietnamese%20man%20with%20short%20black%20hair%20wearing%20casual%20attire%2C%20simple%20background%2C%20high%20quality%20portrait&width=100&height=100&seq=user567&orientation=squarish" alt="Avatar" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900">Trần Minh Quân</p>
+                                <p class="text-sm text-gray-500">Hành khách hủy chuyến đi vào phút chót</p>
+                                <div class="mt-1 flex items-center gap-2">
+                                    <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">Đã giải quyết</span>
+                                    <span class="text-xs text-gray-500">1 ngày trước</span>
+                                </div>
+                            </div>
+                            <button class="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 hover:text-gray-500">
+                                <i class="ri-more-2-fill"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
+            <div class="bg-white rounded-lg shadow lg:col-span-2">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-medium text-gray-900">Người dùng mới</h3>
+                        <a href="#" class="text-sm font-medium text-primary hover:text-primary/80">Xem tất cả</a>
+                    </div>
+                    <div class="mt-4 flow-root">
+                        <div class="-mx-4 -my-2 overflow-x-auto">
+                            <div class="inline-block min-w-full py-2 align-middle">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Người dùng</th>
+                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
+                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Vai trò</th>
+                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Trạng thái</th>
+                                        <th scope="col" class="relative py-3.5 pl-3 pr-4"><span class="sr-only">Hành động</span></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="whitespace-nowrap py-4 pl-4 pr-3">
+                                            <div class="flex items-center">
+                                                <div class="h-10 w-10 flex-shrink-0">
+                                                    <img class="h-10 w-10 rounded-full" src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20young%20Vietnamese%20woman%20with%20long%20black%20hair%20wearing%20business%20casual%2C%20simple%20background%2C%20high%20quality%20portrait&width=100&height=100&seq=user789&orientation=squarish" alt="">
+                                                </div>
+                                                <div class="ml-4">
+                                                    <div class="font-medium text-gray-900">Phạm Thị Thanh Thảo</div>
+                                                    <div class="text-gray-500">Đăng ký: 09/06/2025</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">thao.pham@gmail.com</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Tài xế</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm">
+                                            <span class="inline-flex items-center rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800">Chờ xác minh</span>
+                                        </td>
+                                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium">
+                                            <button class="text-primary hover:text-primary/80">Xác minh</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="whitespace-nowrap py-4 pl-4 pr-3">
+                                            <div class="flex items-center">
+                                                <div class="h-10 w-10 flex-shrink-0">
+                                                    <img class="h-10 w-10 rounded-full" src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20a%20young%20Vietnamese%20man%20with%20glasses%20wearing%20casual%20attire%2C%20simple%20background%2C%20high%20quality%20portrait&width=100&height=100&seq=user901&orientation=squarish" alt="">
+                                                </div>
+                                                <div class="ml-4">
+                                                    <div class="font-medium text-gray-900">Nguyễn Đức Hoàng</div>
+                                                    <div class="text-gray-500">Đăng ký: 09/06/2025</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">hoang.nguyen@dtu.edu.vn</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Hành khách</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm">
+                                            <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">Đã xác minh</span>
+                                        </td>
+                                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium">
+                                            <button class="text-gray-400 cursor-not-allowed">Đã xác minh</button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Địa điểm phổ biến</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-50">
+                                    <i class="ri-building-2-line text-xl text-blue-600"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-gray-900">Đại học Duy Tân - Cơ sở chính</p>
+                                    <p class="text-xs text-gray-500">254 Nguyễn Văn Linh</p>
+                                </div>
+                            </div>
+                            <div class="text-sm font-medium text-gray-900">1,245</div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-purple-50">
+                                    <i class="ri-home-4-line text-xl text-purple-600"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-gray-900">KTX Đại học Duy Tân</p>
+                                    <p class="text-xs text-gray-500">Khu đô thị FPT</p>
+                                </div>
+                            </div>
+                            <div class="text-sm font-medium text-gray-900">892</div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-green-50">
+                                    <i class="ri-building-line text-xl text-green-600"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-gray-900">Đại học Duy Tân - Quang Trung</p>
+                                    <p class="text-xs text-gray-500">120 Quang Trung</p>
+                                </div>
+                            </div>
+                            <div class="text-sm font-medium text-gray-900">654</div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-yellow-50">
+                                    <i class="ri-store-2-line text-xl text-yellow-600"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-gray-900">Chợ Hàn</p>
+                                    <p class="text-xs text-gray-500">Quận Hải Châu</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('tripChart');
+        if (ctx && ctx.getContext) {
+            new Chart(ctx.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
+                    datasets: [{
+                        label: 'Số chuyến đi',
+                        data: [150, 200, 180, 220, 250, 280, 300],
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        } else {
+            console.error('Canvas element with id "tripChart" not found or invalid.');
+        }
+    });
+</script>
+</body>
+</html> 

@@ -1,0 +1,159 @@
+﻿@model List<DNUrideshare.Controllers.Trip>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quản lý Chuyến Đi - Tài xế - DNU Rideshare</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #e6f0fa, #d1e6f2);
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            padding-top: 80px;
+        }
+        .nav-container {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+            padding: 0 0px 0 0px; /* Sát trái và phải */
+        }
+        .nav-logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1e3a8a;
+            padding-left: 0px; /* Sát trái */
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .nav-links a {
+            color: #2d3748;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: #1e3a8a;
+        }
+        .login-btn {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-right: 0px; /* Sát phải */
+        }
+        .login-btn:hover {
+            background-color: #dc2626;
+        }
+        .login-confirm {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1001;
+            text-align: center;
+        }
+        .manage-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .trip-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 15px;
+        }
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+<nav class="nav-container">
+    <div class="nav-content">
+        <div class="nav-logo">DNU Rideshare</div>
+        <div class="nav-links">
+            <a href="@Url.Action("DriverDashboard", "Account")">Trang chủ</a>
+            <a href="@Url.Action("Trips", "Driver")">Chuyến đi</a>
+            <a href="@Url.Action("PostTrip", "Driver")">Đăng chuyến đi</a>
+            <a href="@Url.Action("ManageTrips", "Driver")">Quản lý chuyến đi</a>
+            <a href="@Url.Action("AccountInfo", "Driver")">Thông tin tài khoản</a>
+        </div>
+        <button class="login-btn" onclick="showLoginConfirm()">Đăng xuất</button>
+    </div>
+</nav>
+    <div class="manage-container">
+        <h2 class="text-2xl font-bold text-center text-1e3a8a mb-4">Quản lý Chuyến Đi</h2>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var trip in Model)
+            {
+                <div class="trip-card">
+                    <h4 class="text-lg font-semibold">@trip.Origin -> @trip.Destination</h4>
+                    <p><strong>Thời gian khởi hành:</strong> @trip.DepartureTime.ToString("dd/MM/yyyy HH:mm")</p>
+                    <p><strong>Chỗ trống:</strong> @trip.AvailableSeats</p>
+                    <p><strong>Giá:</strong> @trip.PricePerSeat.ToString("N0") VND</p>
+                    <a href="#" class="btn-primary mt-2">Cập nhật</a>
+                    <form asp-action="CancelTrip" asp-controller="Driver" method="post" style="display:inline;">
+                        <input type="hidden" name="tripId" value="@trip.GetHashCode()" />
+                        <button type="submit" class="btn-danger mt-2">Hủy chuyến</button>
+                    </form>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-center text-2d3748">Chưa có chuyến đi nào để quản lý.</p>
+        }
+    </div>
+    <div id="loginConfirm" class="login-confirm hidden">
+        <p class="mb-4">Bạn có muốn Đăng xuất?</p>
+        <button class="btn-primary mr-2" onclick="confirmLogin()">Có</button>
+        <button class="login-btn" onclick="hideLoginConfirm()">Không</button>
+    </div>
+    <script>
+        function showLoginConfirm() {
+            document.getElementById('loginConfirm').classList.remove('hidden');
+        }
+        function hideLoginConfirm() {
+            document.getElementById('loginConfirm').classList.add('hidden');
+        }
+        function confirmLogin() {
+            window.location.href = '@Url.Action("Login", "Account")';
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

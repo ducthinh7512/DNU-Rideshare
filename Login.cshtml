@@ -1,0 +1,133 @@
+﻿@model DNUrideshare.Models.LoginModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Đăng nhập</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f0f4f8, #d9e7ec);
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        .login-container {
+            max-width: 800px;
+            margin: 50px auto;
+        }
+        .login-box {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .tab-content {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">Đăng nhập hệ thống</h2>
+            <ul class="nav nav-tabs justify-center mb-6" id="loginTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="customer-tab" data-bs-toggle="tab" href="#customer" role="tab">Khách hàng</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="driver-tab" data-bs-toggle="tab" href="#driver" role="tab">Tài xế</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="admin-tab" data-bs-toggle="tab" href="#admin" role="tab">Admin</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <!-- Form đăng nhập khách hàng -->
+                <div class="tab-pane fade show active" id="customer" role="tabpanel">
+                    <div class="p-6">
+                        <h4 class="text-xl font-semibold mb-4 text-gray-700">Đăng nhập khách hàng</h4>
+                        <form asp-action="Login" method="post">
+                            <input type="hidden" asp-for="UserType" value="Customer" />
+                            <div class="mb-4">
+                                <label asp-for="Username" class="form-label">Tên đăng nhập</label>
+                                <input asp-for="Username" class="form-control" />
+                                <span asp-validation-for="Username" class="text-danger"></span>
+                            </div>
+                            <div class="mb-5">
+                                <label asp-for="Password" class="form-label">Mật khẩu</label>
+                                <input asp-for="Password" type="password" class="form-control" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <div class="alert alert-danger">
+                                    @Html.ValidationSummary()
+                                </div>
+                            }
+                            <button type="submit" class="btn btn-primary w-full">Đăng nhập</button>
+                        </form>
+                    </div>
+                </div>
+                <!-- Form đăng nhập tài xế -->
+                <div class="tab-pane fade" id="driver" role="tabpanel">
+                    <div class="p-6">
+                        <h4 class="text-xl font-semibold mb-4 text-gray-700">Đăng nhập tài xế</h4>
+                        <form asp-action="Login" method="post">
+                            <input type="hidden" asp-for="UserType" value="Driver" />
+                            <div class="mb-4">
+                                <label asp-for="Username" class="form-label">Tên đăng nhập</label>
+                                <input asp-for="Username" class="form-control" />
+                                <span asp-validation-for="Username" class="text-danger"></span>
+                            </div>
+                            <div class="mb-5">
+                                <label asp-for="Password" class="form-label">Mật khẩu</label>
+                                <input asp-for="Password" type="password" class="form-control" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <div class="alert alert-danger">
+                                    @Html.ValidationSummary()
+                                </div>
+                            }
+                            <button type="submit" class="btn btn-primary w-full">Đăng nhập</button>
+                        </form>
+                    </div>
+                </div>
+                <!-- Form đăng nhập admin -->
+                <div class="tab-pane fade" id="admin" role="tabpanel">
+                    <div class="p-6">
+                        <h4 class="text-xl font-semibold mb-4 text-gray-700">Đăng nhập Admin</h4>
+                        <form asp-action="Login" method="post">
+                            <input type="hidden" asp-for="UserType" value="Admin" />
+                            <div class="mb-4">
+                                <label asp-for="Username" class="form-label">Tên đăng nhập</label>
+                                <input asp-for="Username" class="form-control" />
+                                <span asp-validation-for="Username" class="text-danger"></span>
+                            </div>
+                            <div class="mb-5">
+                                <label asp-for="Password" class="form-label">Mật khẩu</label>
+                                <input asp-for="Password" type="password" class="form-control" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <div class="alert alert-danger">
+                                    @Html.ValidationSummary()
+                                </div>
+                            }
+                            <button type="submit" class="btn btn-primary w-full">Đăng nhập</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>
